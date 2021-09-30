@@ -13,7 +13,7 @@
     in:fade
     out:fade
     on:click={removeSelectedCategory}
-    class="bg-purpleish-light my-2 py-1 px-2 w-4/6 text-center rounded-full cursor-pointer transition-colors hover:bg-red-500"
+    class="bg-purpleish-light mt-4 py-1 px-2 w-4/6 text-center rounded-full cursor-pointer transition-colors hover:bg-red-500"
 >
     <p class="text-sm">{title}</p>
 </div>
