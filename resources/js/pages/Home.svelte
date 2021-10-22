@@ -24,17 +24,31 @@
 
         isLoading = true;
 
-        const res = await fetch('/movies', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-            },
-            body: JSON.stringify({
-                category: selectedCategories.join(','),
-            }),
-        });
+        try {
+            const res = await fetch('/movies', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                },
+                body: JSON.stringify({
+                    category: selectedCategories.join(','),
+                }),
+            });
 
-        currentMovie = await res.json();
+            if (res.status !== 200) {
+                throw new Error();
+            }
+
+            const json = await res.json();
+            const movie = json['data'];
+
+            if (movie) {
+                currentMovie = movie;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
         isLoading = false;
     }
 </script>

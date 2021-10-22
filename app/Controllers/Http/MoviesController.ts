@@ -1,12 +1,13 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import { getRandomMovie } from '../../Services/imdbService';
+import ImdbService from 'App/Services/imdbService';
 
 export default class MoviesController {
     public async search({ request }: HttpContextContract) {
         const { category } = request.body();
 
-        const movie = await getRandomMovie(category);
+        const imdbService = new ImdbService();
+        const movie = await imdbService.getRandomMovie(category);
 
-        return movie;
+        return { data: movie };
     }
 }

@@ -1,20 +1,8 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 
-interface Movie {
-    title: string;
-    url: string;
-    img_url: string | undefined;
-    year: string;
-    rating: string;
-    description: string;
-    categories: string;
-    duration: string;
-    director: string;
-}
-
-async function getRandomMovie(category: string): Promise<Movie | undefined> {
-    try {
+export default class ImdbService {
+    public async getRandomMovie(category: string): Promise<Movie | undefined> {
         let res = await axios.get(`https://www.imdb.com/search/title/?genres=${category}`);
         let $ = cheerio.load(res.data);
 
@@ -62,9 +50,5 @@ async function getRandomMovie(category: string): Promise<Movie | undefined> {
             duration,
             director,
         };
-    } catch (error) {
-        console.error(error);
     }
 }
-
-export { getRandomMovie };
