@@ -1,9 +1,36 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import { IImdbData } from 'App/Interfaces/IImdbData';
 
 export default class ImdbService {
-    public async getRandomMovie(category: string): Promise<Movie | undefined> {
-        let res = await axios.get(`https://www.imdb.com/search/title/?genres=${category}`);
+    public async search(types: string[], genres: string[]) {
+        const randomCategoryId = this.getRandomNumber(0, types.length);
+        const randomCategory = types[randomCategoryId];
+        const genresQuery = genres.map((genre) => genre.toLowerCase()).join(',');
+
+        let data: IImdbData | null;
+
+        switch (randomCategory) {
+            case 'movie':
+                data = await this.getRandomTitle(genresQuery, 'movie');
+                break;
+            case 'series':
+                data = await this.getRandomTitle(genresQuery, 'series');
+                break;
+            default:
+                data = null;
+                break;
+        }
+
+        return data;
+    }
+
+    private async getRandomTitle(genres: string, type: string): Promise<IImdbData> {
+        let res = await axios.get(
+            `https://www.imdb.com/search/title/?genres=${genres}${
+                type === 'series' ? '&title_type=tv_series' : ''
+            }`
+        );
         let $ = cheerio.load(res.data);
 
         const titles = $('.desc').first().text();
@@ -11,7 +38,7 @@ export default class ImdbService {
         const randomPage = Math.floor(Math.random() * (parseInt(titlesTotal) / 50 - 1) + 1);
 
         res = await axios.get(
-            `https://www.imdb.com/search/title/?genres=${category}&start=${randomPage}&ref_=adv_nxt`
+            `https://www.imdb.com/search/title/?genres=${genres}&start=${randomPage}&ref_=adv_nxt`
         );
         $ = cheerio.load(res.data);
 
@@ -50,5 +77,9 @@ export default class ImdbService {
             duration,
             director,
         };
+    }
+
+    private getRandomNumber(min: number, max: number): number {
+        return Math.floor(Math.random() * (max - min) + min);
     }
 }

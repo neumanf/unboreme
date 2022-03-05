@@ -1,4 +1,4 @@
-const movieCategories = [
+export const imdbCategories = [
     { id: 0, text: 'Select' },
     { id: 1, text: 'Comedy' },
     { id: 2, text: 'Sci-fi' },
@@ -14,5 +14,3 @@ const movieCategories = [
     { id: 12, text: 'Fantasy' },
     { id: 13, text: 'Superhero' },
 ];
-
-export { movieCategories };

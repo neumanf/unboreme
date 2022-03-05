@@ -1,4 +1,4 @@
-interface Movie {
+export interface IImdbData {
     title: string;
     url: string;
     img_url: string | undefined;

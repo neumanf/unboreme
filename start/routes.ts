@@ -24,4 +24,4 @@ Route.get('/', async ({ inertia }) => {
     return inertia.render('Home');
 });
 
-Route.post('/movies', 'MoviesController.search');
+Route.post('/search', 'SearchController.search');
